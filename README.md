@@ -1,27 +1,45 @@
-Mars Kolonisi Yaşam Destek Simülatörü (C ile Metin Tabanlı Oyun)
-Bu depo, Algoritma ve Programlama dersi kapsamında geliştirilen, C dilinin temel yapılarını (koşullu ifadeler, döngüler, aritmetik ve mantıksal operatörler) kullanarak tasarlanmış metin tabanlı bir Mars Kolonisi Yaşam Destek Simülatörüdür.
-Proje, Mars'taki bir araştırma istasyonunda mahsur kalan bir mühendisin, kurtarma ekibi gelene kadar (15. günü tamamlayana kadar) kaynaklarını (sağlık, enerji, oksijen, su, yedek parça) yöneterek hayatta kalmasını hedefler.
-🚀 Proje Özellikleri ve Teknik Yapısı
-Kod mimarisi, proje dokümanında belirtilen kısıtlamalar ve algoritmik gereksinimler doğrultusunda modüler ve anlaşılır bir yapıda tasarlanmıştır:
-Komut Sistemi (SWITCH-CASE & Fall-Through):
-Oyuncu komutları büyük/küçük harf duyarsız olarak (g/G şeklinde) işlenir. Bu yapı, switch-case bloklarında fall-through (ardışık durum birleştirme) mekanizması kullanılarak sağlanmıştır.
-Tanımsız girişlerde default bloğu tetiklenir, kullanıcı uyarılır ve bu durum tur/süre harcamaz.
-Aritmetik ve Mantıksal İşlemler:
-Keşif (G): Enerji ve oksijen tüketir; rand() % 100 ve mantıksal operatörler (&&, ||) yardımıyla su, yedek parça bulma veya yaralanma ihtimallerini hesaplar.
-Oksijen Üretimi (O): Su ve enerji dönüşümünü aritmetik işlemlerle yapar. Mod operatörü (%) ile suyun çift/tek durumunu kontrol ederek artıkları depoda tutar.
-Tamir (T): Modül hasarını IF-ELSE IF kademelerine (0-30, 31-70, 71-100) ayırarak yedek parça tüketimi karşılığında onarır.
-Dinlenme (U): İç içe IF yapıları ile oksijen seviyesinin 20'nin altında olup olmadığını kontrol ederek sağlık ve enerji artışını düzenler.
-Gelişmiş Döngü Kullanımları (FOR & DO-WHILE):
-Kum Fırtınası Simülasyonu (FOR): Zorluk seviyesine göre (Kolay: 3, Normal: 5, Zor: 7 tur) çalışır. Çift numaralı turlarda mod operatörü (% 2 == 0) ile rüzgar şiddeti artırılarak hasar iki katına çıkarılır. break ile acil çıkış, continue ile hava kilidi mühürlüyse oksijen sızıntısının atlanması sağlanır.
-Hava Kilidi Şifresi (DO-WHILE): Gün sayısından aritmetik olarak türetilen ('A' + (gun % 26)) büyük harf şifreyi çözmek için en fazla 3 deneme hakkı sunar. Yanlış denemelerde "ileri git" / "geri git" yönlendirmeleri yapılır.
-Durum Yönetimi ve Zaman Akışı:
-Sağlık, enerji, oksijen, su, yedek parça, modül hasarı ve kilit durumu 0-100 arasında sınırlandırılmıştır.
-Her 3 turda bir (tur % 3 == 0) yeni gün başlar; oksijen azalması ve kritik hasar durumlarında ek sağlık kayıpları işlenir.
-Oyun sonunda formüle dayalı kapsamlı bir başarı puanı hesaplanır (Puan = (gun × 100) + saglik + oksijen - modulHasari).
-🛠️ Kullanılan Kütüphaneler
-Kod içerisinde temel G/Ç, rastgele sayı üretimi ve zaman fonksiyonları için şu kütüphaneler yer almaktadır:
-#include <stdio.h> -> Ekrana yazdırma ve klavyeden okuma işlemleri için.
-#include <stdlib.h> -> Rastgele sayı üretimi (rand()) için.
-#include <time.h> -> Zaman tabanlı tohumlama (srand(time(NULL))) için.
-💻 Kurulum ve Çalıştırma
-Projeyi yerel bilgisayarınıza klonlamak ve çalıştırmak için terminal veya komut satırında şu adımları takip edebilirsiniz:
+# Mars Kolonisi Yaşam Destek Simülatörü 🚀
+
+> Algoritma ve Programlama dersi kapsamında C programlama dili ile geliştirilmiş, metin tabanlı ve karakter kontrollü hayatta kalma simülasyonu.
+
+---
+
+## 📋 Proje Hakkında
+Bu proje, Mars'taki bir araştırma istasyonunda mahsur kalan bir mühendisin hikayesini konu alır[span_0](start_span)[span_0](end_span). Oyuncu, kurtarma ekibi gelene kadar (**15. günü tamamlayana kadar**) sınırlı kaynaklarını (`sağlık`, `enerji`, `oksijen`, `su`, `yedek parça`) yöneterek hayatta kalmaya çalışır[span_1](start_span)[span_1](end_span). Tüm akış C dilinin temel kontrol yapıları, döngüleri ve operatörleri kullanılarak konsol ortamında simüle edilmiştir[span_2](start_span)[span_2](end_span).
+
+---
+
+## ⚙️ Oyun Mekanikleri ve Komut Sistemi
+Oyun sırasında her tur oyuncudan tek karakterlik bir komut alınır ve `switch-case` yapısı ile işlenir[span_3](start_span)[span_3](end_span). Komutlar büyük/küçük harf duyarsızdır (örn. `g` veya `G`)[span_4](start_span)[span_4](end_span).
+
+| Komut | İşlev Açıklaması |
+| :---: | :--- |
+| **G** | **Keşif Görevi:** Enerji ve oksijen tüketir; mantıksal operatörler ve rastgele sayılarla su, yedek parça bulma veya yaralanma durumlarını hesaplar[span_5](start_span)[span_5](end_span). |
+| **O** | **Oksijen Üretimi:** Su ve enerji harcayarak oksijen üretir (2 birim su = 3 birim oksijen). Mod operatörü ile artık kontrolü yapılır[span_6](start_span)[span_6](end_span). |
+| **T** | **Tamir:** Yedek parça kullanarak modül hasarını kademeli (`if-else if`) olarak azaltır[span_7](start_span)[span_7](end_span). |
+| **D** | **Durum Raporu:** Tüm değişkenleri, kritik uyarıları veya güvenli sistem durumunu ekrana yazdırır (tur harcamaz)[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span). |
+| **U** | **Uyu / Dinlen:** Enerji ve sağlık değerlerini artırır; oksijen tüketimi devam eder (iç içe `if` kontrolleri içerir)[span_10](start_span)[span_10](end_span). |
+| **K** | **Kum Fırtınası (`for` döngüsü):** Zorluk derecesine göre tur sayısı belirlenen fırtınayı simüle eder[span_11](start_span)[span_11](end_span). Çift turlarda hasar katlanır[span_12](start_span)[span_12](end_span). |
+| **H** | **Hava Kilidi Şifresi (`do-while` döngüsü):** Gün sayısından türetilen şifreyi 3 denemede çözme mekanizmasıdır[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span). |
+| **Q** | **Çıkış:** Oyunu sonlandırır ve detaylı sonuç raporunu görüntüler[span_15](start_span)[span_15](end_span). |
+
+---
+
+## 🛠️ Teknik Altyapı ve Kullanılan C Yapıları
+
+* **Kontrol Yapıları:** Zorluk seçimi ve komut yönlendirmeleri için `switch-case` (fall-through destekli) ve `if-else if-else` kademeleri[span_16](start_span)[span_16](end_span)[span_17](start_span)[span_17](end_span).
+* **Döngüler:** 
+  * `do-while` döngüsü ile ana oyun akışı ve sınırlı hak içeren şifre doğrulama mekanizmaları[span_18](start_span)[span_18](end_span)[span_19](start_span)[span_19](end_span)[span_20](start_span)[span_20](end_span).
+  * `for` döngüsü ile kum fırtınası turlarının yönetimi (`break` ve `continue` komutları ile)[span_21](start_span)[span_21](end_span).
+* **Rastgelelik:** `srand(time(NULL))` ve `rand() % 100` fonksiyonları ile her kritik kararda zar atılması ve ekrana eşik değerlerin yansıtılması[span_22](start_span)[span_22](end_span)[span_23](start_span)[span_23](end_span).
+* **Aritmetik ve Mantıksal Operatörler:** Mod (`%`) operatörü ile su artıkları, çift tur kontrolü ve karmaşık mantıksal bağlaçlar (`&&`, `||`)[span_24](start_span)[span_24](end_span)[span_25](start_span)[span_25](end_span).
+
+---
+
+## 🚀 Kurulum ve Çalıştırma
+
+Projeyi derlemek ve çalıştırmak için bilgisayarınızda bir C derleyicisi (GCC vb.) kurulu olmalıdır.
+
+1. Depoyu klonlayın:
+   ```bash
+   git clone [https://github.com/KULLANICI_ADI/mars-kolonisi-simulatoru.git](https://github.com/KULLANICI_ADI/mars-kolonisi-simulatoru.git)
